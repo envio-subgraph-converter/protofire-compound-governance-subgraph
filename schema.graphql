@@ -1,0 +1,62 @@
+enum ProposalStatus {
+  PENDING
+  ACTIVE
+  CANCELLED
+  QUEUED
+  EXECUTED
+}
+
+type TokenHolder {
+  id: ID!
+  delegate_id: String
+  tokenBalanceRaw: BigInt!
+  tokenBalance: BigDecimal!
+  totalTokensHeldRaw: BigInt!
+  totalTokensHeld: BigDecimal!
+}
+
+type Delegate {
+  id: ID!
+  delegatedVotesRaw: BigInt!
+  delegatedVotes: BigDecimal!
+  tokenHoldersRepresentedAmount: Int!
+  tokenHoldersRepresented: [TokenHolder!]! @derivedFrom(field: "delegate_id")
+  votes: [Vote!]! @derivedFrom(field: "voter_id")
+  proposals: [Proposal!]! @derivedFrom(field: "proposer_id")
+}
+
+type Proposal {
+  id: ID!
+  proposer_id: String!
+  targets: [String!]!
+  values: [BigInt!]!
+  signatures: [String!]!
+  calldatas: [String!]!
+  startBlock: BigInt!
+  endBlock: BigInt!
+  description: String!
+  status: ProposalStatus!
+  executionETA: BigInt
+  votes: [Vote!]! @derivedFrom(field: "proposal_id")
+}
+
+type Vote {
+  id: ID!
+  support: Boolean!
+  votesRaw: BigInt!
+  votes: BigDecimal!
+  voter_id: String!
+  proposal_id: String!
+}
+
+type Governance {
+  id: ID!
+  proposals: BigInt!
+  currentTokenHolders: BigInt!
+  currentDelegates: BigInt!
+  totalTokenHolders: BigInt!
+  totalDelegates: BigInt!
+  delegatedVotesRaw: BigInt!
+  delegatedVotes: BigDecimal!
+  proposalsQueued: BigInt!
+}

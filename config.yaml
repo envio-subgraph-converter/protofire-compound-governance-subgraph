@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: compound-governance-indexer
+description: Compound Governance Indexer
+contracts:
+  - name: GovernorAlpha
+    abi_file_path: ./abis/GovernorAlpha.json
+    events:
+      - event: "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)"
+      - event: "ProposalCanceled(uint256 id)"
+      - event: "ProposalQueued(uint256 id, uint256 eta)"
+      - event: "ProposalExecuted(uint256 id)"
+      - event: "VoteCast(address voter, uint256 proposalId, bool support, uint256 votes)"
+  - name: CompoundToken
+    abi_file_path: ./abis/CompoundToken.json
+    events:
+      - event: "DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate)"
+      - event: "DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance)"
+      - event: "Transfer(address indexed from, address indexed to, uint256 amount)"
+chains:
+  - id: 1
+    start_block: 9601359
+    contracts:
+      - name: GovernorAlpha
+        address: "0xc0da01a04c3f3e0be433606045bb7017a7323e38"
+        start_block: 9601459
+      - name: CompoundToken
+        address: "0xc00e94cb662c3520282e6f5717214004a7f26888"
